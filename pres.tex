@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme{Boadilla}
 
 \usepackage{mathtools}
@@ -24,7 +24,10 @@
 \newcommand{\RID}[4]{\mathrm{R}_{[x:\sigma,y:\sigma,p:Id_\sigma(x,y)]\tau}^{Id}(#1, #2, #3, #4)}
 \newcommand{\bn}{[n:\N,x:\sigma]}
 \newcommand{\bi}{[z:\sigma]}
-
+\newcommand{\Pich}{\hat{\Pi}}
+\newcommand{\Appch}[2]{\hat{App}_{[x:\sigma]El(T)}(#1,#2)}
+\newcommand{\lambdach}{\hat{\lambda} x:\sigma.M^{El(T)}}
+\newcommand{\Gamdash}{\Gamma\vdash}
 
 \title{Dependant Types}
 \subtitle{Initiation to research}
@@ -45,7 +48,7 @@
     \begin{frame}
         \frametitle{History}
         \begin{itemize}
-            \item[-] 1972: System F, G. Huet
+            \item[-] 1972: System F, J-Y. Girard
             \item[-] 1975: \underline{Intuitionnistic Type Theory}, P. Martin-Lof
             \item[-] 1986: Nuprl System
             \item[-] 1988: Calculus of Construction, T. Coquand  
@@ -155,7 +158,7 @@
     \end{frame}
     \begin{frame}
         \frametitle{Rules}
-        $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamma\vdash \Sigma x:\sigma.\tau \typ}\F$$
+        $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamdash \Sigma x:\sigma.\tau \typ}\F$$
         $$\frac{\Gamma \vdash M : \sigma\quad \Gamma \vdash N : \tau[M/x]}{\Gamma \vdash \pair{M}{N} : \Sigma x:\sigma.\tau}\Intro$$
         $$\frac{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}:\rho[\pair{}{}/z]}}{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}}}\C$$
         $$=H[M/x,N/y]:\rho[\pair{}{}/z].$$
@@ -176,9 +179,9 @@
         \frametitle{Rules}
         $$\frac{\vdash \Gamma \cntxt}{\Gamma \vdash \N \typ}\F \frac{\vdash \Gamma \cntxt}{\Gamma \vdash 0 : \N}\& \frac{\Gamma \vdash M : \N}{\Gamma \vdash Suc(M):\N}\Intro$$
         $$\Gamma,n:\N\vdash\sigma\typ$$
-        $$\Gamma\vdash H_z : \sigma[0/n]$$
+        $$\Gamdash H_z : \sigma[0/n]$$
         $$\Gamma,n:\N,x:\sigma\vdash H_s : \sigma[Suc(n)/n]$$
-        $$\frac{\Gamma\vdash M: \N}{\Gamma\vdash\RN{H_z}{[n:\N,x:\sigma]H_s}{M}:\sigma[M/n]}\E$$
+        $$\frac{\Gamdash M: \N}{\Gamdash\RN{H_z}{[n:\N,x:\sigma]H_s}{M}:\sigma[M/n]}\E$$
         $$\frac{\Gamma \vdash \RN{H_z}{\bn H_s}{0} : \sigma[0/n]}{\Gamma \vdash \RN{H_z}{\bn H_s}{0} = H_z: \sigma[0/n]}\C$$
         $$\frac{\Gamma \vdash \RN{H_z}{\bn H_s}{Suc(M)} : \sigma[Suc(M)/n]}{\Gamma \vdash \RN{H_z}{\bn H_s}{Suc(M)} =}\C$$
         $$ H_s[M/n,\RN{H_z}{\bn H_s}{M}/x]:\sigma[Suc(M)/n]$$
@@ -195,21 +198,61 @@
     \end{frame}
     \begin{frame}
         \frametitle{Rules}
-        $$\frac{\Gamma\vdash M:\sigma \quad \Gamma\vdash N:\sigma}{\Gamma \vdash \Id{M}{N} \typ}\F$$
-        $$\frac{\Gamma\vdash M:\sigma}{\Gamma\vdash\Refl{M}:\Id{M}{M}}\Intro$$
-        $$\Gamma\vdash\sigma\typ\quad\Gamma\vdash M:\sigma\quad\Gamma\vdash N:\sigma$$
+        $$\frac{\Gamdash M:\sigma \quad \Gamdash N:\sigma}{\Gamma \vdash \Id{M}{N} \typ}\F$$
+        $$\frac{\Gamdash M:\sigma}{\Gamdash\Refl{M}:\Id{M}{M}}\Intro$$
+        $$\Gamdash\sigma\typ\quad\Gamdash M:\sigma\quad\Gamdash N:\sigma$$
         $$\Gamma, x:\sigma,y:\sigma,p:\Id{x}{y}\vdash\tau\typ$$
         $$\Gamma,z:\sigma\vdash H:\tau[z/x,z/y,\Refl{z}/p]$$
-        $$\frac{\Gamma\vdash P:\Id{M}{N}}{\Gamma\vdash\RID{[z:\sigma]H}{M}{N}{P}:\tau[M/x,N/y,P/p]}\E$$
+        $$\frac{\Gamdash P:\Id{M}{N}}{\Gamdash\RID{[z:\sigma]H}{M}{N}{P}:\tau[M/x,N/y,P/p]}\E$$
         $$\frac{\Gamma \vdash \RID{\bi H}{M}{M}{\Refl{M}}:\tau[M/x,M/y,\Refl{M}/p]}{\Gamma \vdash\ idem = H[M/z]:\tau[M/x,M/y,\Refl{M}/p]}$$$\C$
     \end{frame}
     \subsection{Universes}
     \begin{frame}
-        \frametitle{Universes}    
+        \frametitle{Universes}
+        \begin{itemize}
+            \item Universes are type formers containing codes for types
+            \item We have the two basic rules:
+            $$\frac{\vdash \Gamma \cntxt}{\Gamma \vdash U \typ}\quad\frac{\Gamma \vdash M:U}{\Gamdash El(M)\typ}$$
+            \item $M$ is a code of the universe $U$
+            \item $El(M)$ is the type associated to this code
+            \item Add type formers to our Universes
+            \item Rules to maintain closure
+        \end{itemize}
+          
     \end{frame}
     \begin{frame}
-        \frametitle{Rules}
-        $$\frac{\vdash \Gamma \cntxt}{\Gamma \vdash U \typ}\quad\frac{\Gamma \vdash M:U}{\Gamma\vdash El(M)\typ}$$
+        \frametitle{Adding dependant type $\Pich$}
+        $$\frac{\Gamma \vdash S:U\quad \Gamma,s:El(S)\vdash T:U}{\Gamma \vdash \Pich(S,[s:El(S)]T):U}\F$$
+        \vspace{15pt}
+        $$\frac{\Gamdash\Pich(S,[s:El(S)]T):U}{\Gamdash El(\Pich(S,[s:El(S)]T)) = \Pi s:El(S).El(T) \typ}$$
+    \end{frame}
+    \begin{frame}
+        \frametitle{Impredicative quantification}
+        \begin{itemize}
+            \item We can add $\forall$ or Impredicative quantification
+            \item Terms like $\forall x:\sigma.T:U$
+            \item domain type $\sigma arbitrarily big$
+            \item Allows typing of the identity function $polyone$ known from polymorphic lambda calculus
+            \item $polyone = \forall c:U.\forall:El(c).c$
+        \end{itemize}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Impredicative quantification - Rules}
+        $$\frac{\Gamdash\sigma\typ\quad\Gamma,x:\sigma\vdash T:U}{\Gamdash\forall x:\sigma.T:U}$$
+        $$\frac{\Gamma,x:\sigma\vdash M:El(T)}{\Gamdash\lambdach:El(\forall x:\sigma.T)}\Intro$$
+        $$\frac{\Gamdash M:el(\forall x:\sigma.T)\quad\Gamdash N:\sigma}{\Gamdash\Appch{M}{N}:El(T[N/x])}\E$$
+        $$\frac{\Gamdash\Appch{\lambdach}{N}:El(T[N/x])}{\Gamdash\Appch{\lambdach}{N}=M[N/x]:El(T[N/x])}\C$$
+    \end{frame}
+    \section{Intensional and Extensional type theory}
+    \begin{frame}
+        \frametitle{Intensional and Extensional type theory}
+        \begin{itemize}
+            \item type theory + identity types = intensional type theory
+            \item equality reflection:
+            $$\frac{\Gamma \vdash M = N : \sigma}{\Gamma \vdash P: \Id{M}{N}}$$
+            \item type theory + identity types + reflection rule = extensional type theory
+            \item Judgmental equality and typing undecidable
+        \end{itemize}
     \end{frame}
     \section{Categoretical Semantics}
     \begin{frame}
@@ -222,6 +265,7 @@
             But...
         \end{itemize}
     \end{frame}
+
     \begin{frame}
         \frametitle{Comprehension Category}
         \underline{Definition:}\\
@@ -247,26 +291,5 @@
         \frametitle{Category with families}
         A category with attributes specifies for each “context” only a set of “types” in that context. A comprehension category, by contrast, specifies a whole category of “types” in each context. If $A,B \in E \Gamma$, then we may think of a morphism $f:E\to A$ in $E \Gamma$ as a term in type theory.
         A category with families specifies instead, for each context and each type in that context, a set of “terms belonging to that type”. These should be thought of as terms in type theory.
-    \end{frame}
-    \section{Martin-Lof type theory}
-    \subsection{Properties}
-    \begin{frame}
-        \frametitle{Martin-Lof type theory: Axiom of choice}
-        \underline{Logical form of the axiom of choice:}\\
-        Let $\sigma, \tau, \upsilon$ three types such that:
-        $$\frac{}{\vdash \sigma \typ}\quad\frac{\vdash x:\sigma}{x:\sigma\vdash\tau\typ}\quad\frac{\vdash x:\sigma\quad \vdash y:\tau}{x:\sigma,y:\tau\vdash\upsilon\typ}$$
-        \underline{Axiom of choice:}
-        $$(\forall x : \sigma) (\exists y : \tau) \upsilon \to (\exists f : (\Pi x : \sigma)\tau)(\forall x : \sigma) \upsilon$$
-    \end{frame}
-    \subsection{Intensional and Extensional type theory}
-    \begin{frame}
-        \frametitle{Intensional and Extensional type theory}
-        \begin{itemize}
-            \item type theory + identity types = intensional type theory
-            \item equality reflection:
-            $$\frac{\Gamma \vdash M = N : \sigma}{\Gamma \vdash P: \Id{M}{N}}$$
-            \item type theory + identity types + reflection rule = extensional type theory
-            \item Judgmental equality and typing undecidable
-        \end{itemize}
     \end{frame}
 \end{document}
