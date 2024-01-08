@@ -78,14 +78,14 @@
     \subsection{Judgments \& Equality}
     \begin{frame}
         \frametitle{Judgments}
-        \begin{align}
+        \begin{align*}
             &\vdash \Gamma \cntxt &\Gamma \text{ is a valid context}\\
             \Gamma &\vdash \sigma \typ &\sigma \text{ is a type in context $\Gamma$}\\
             \Gamma &\vdash M : \sigma &M\text{ is a term of type $\sigma$ in context $\Gamma$}\\
             &\vdash \Gamma = \Delta \cntxt &\text{$\Gamma$ and $\Delta$ are definitionaly equal contexts}\\
             \Gamma &\vdash \sigma = \tau &\text{$\sigma$ and $\tau$ are def. equal types in context $\Gamma$}\\
             \Gamma &\vdash M = N : \sigma &M\text{ and }N\text{ are def. equal terms of $\sigma$ in $\Gamma$}
-        \end{align}
+        \end{align*}
     \end{frame}
     \begin{frame}
         \frametitle{Definitional Equality}
@@ -133,11 +133,10 @@
     \begin{frame}
         \frametitle{$\prod$-type}
         \begin{itemize}
-            \item Called dependant product, dependant function space, $\pi$-type...
-            \item Type former for the functions which the return type depends on the element of the entry type.
+            \item Type former for the functions with return type depending on the parameter
             \item \underline{Set-theoretic equivalent:}\\
             Cartesian product over a family of sets: $\Pi_{i\in I}B_i$
-            \item \underline{type former rules:} type formation, term introduction, term elimination, computation rule and an optional uniqueness rule. And type formers are preserved by definitional equality.
+            \item preserved by definitional equality.
         \end{itemize}
     \end{frame}
     \begin{frame}
@@ -154,11 +153,12 @@
     \begin{frame}
         \frametitle{$\sum$-type}
         \begin{itemize}
-            \item Type former for pairs which the second element type depends on the first element.
+            \item Type former for pairs with second element type depending on the first element
             \item \underline{Set-theoretic equivalent:}\\
             Disjoint union over a family of sets: $\Sigma_{i\in I}B_i \defeq \{(i,b)|i \in I \wedge b \in B_i\}$
             \item $\pi_1 \defeq \R{[x:\sigma,y:\tau]x}{M}:\sigma$
-            \item $\pi_2 \defeq \mathrm{R}^\Sigma_[z:\Sigma x:\sigma.\tau]\tau[z.1/x]([x:\sigma,y:\tau]y, M):\tau[M.1]$
+            \item $\pi_2 \defeq \mathrm{R}^\Sigma_{[z:\Sigma x:\sigma.\tau]\tau[z.1/x]}([x:\sigma,y:\tau]y, M):\tau[M.1]$
+            \item preserved by definitional equality.
         \end{itemize}
     \end{frame}
     \begin{frame}
