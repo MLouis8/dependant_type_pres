@@ -2,6 +2,7 @@
 \usetheme{Boadilla}
 
 \usepackage{mathtools}
+\usepackage{fixmath}
 \usepackage{graphicx}
 \usepackage{tikz}
 
@@ -13,8 +14,8 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\app}[2]{App_{[x:\sigma]\tau}(#1, #2)}
 \newcommand{\pair}[2]{Pair_{[x:\sigma]\tau}(#1, #2)}
-\newcommand{\R}[2]{\mathrm{R}_{[z:\Sigma x:\sigma.\tau]\rho}^{\Sigma}(#1, #2)}
-\newcommand{\RN}[3]{\mathrm{R}_{[n: \N]\sigma}^{\N}(#1, #2, #3)}
+\newcommand{\R}[2]{\mathbold{R}_{[z:\Sigma x:\sigma.\tau]\rho}^{\Sigma}(#1, #2)}
+\newcommand{\RN}[3]{\mathbold{R}_{[n: \N]\sigma}^{\N}(#1, #2, #3)}
 \newcommand{\C}{Comp}
 \newcommand{\Intro}{Intro}
 \newcommand{\F}{Form}
@@ -22,7 +23,7 @@
 \newcommand\defeq{\stackrel{\mathclap{\normalfont\mbox{def}}}{\ =\ }}
 \newcommand{\Id}[2]{Id_\sigma(#1,#2)}
 \newcommand{\Refl}[1]{Refl_\sigma(#1)}
-\newcommand{\RID}[4]{\mathrm{R}_{[x:\sigma,y:\sigma,p:Id_\sigma(x,y)]\tau}^{Id}(#1, #2, #3, #4)}
+\newcommand{\RID}[4]{\mathbold{R}_{[x:\sigma,y:\sigma,p:Id_\sigma(x,y)]\tau}^{Id}(#1, #2, #3, #4)}
 \newcommand{\bn}{[n:\N,x:\sigma]}
 \newcommand{\bi}{[z:\sigma]}
 \newcommand{\Pich}{\hat{\Pi}}
@@ -105,7 +106,7 @@
             \item[-] Judgmental equality
             $$\frac{\Gamma \vdash \N \typ}{\Gamma \vdash 1:\N} \qquad \frac{\Gamma \vdash \N \typ}{\Gamma \vdash 1 = Suc(0):\N}$$
             \item[-] Typal equality
-            $$\frac{\Gamma \vdash \N \typ}{\Gamma \vdash 1:\N} \qquad \frac{\Gamma \vdash \N \typ}{\Gamma \vdash \delta_1:1 =_{\N} Suc(0)}$$
+            $$\frac{\Gamma \vdash \N \typ}{\Gamma \vdash 1:\N} \qquad \frac{\Gamma \vdash \N \typ}{\Gamma \vdash \delta_1: Id_\N(1,Suc(0))}$$
             \item[-] Propositional equality
             $$\frac{\Gamma \vdash \N \typ}{\Gamma \vdash 1:\N} \qquad \frac{\Gamma \vdash \N \typ}{\Gamma \vdash 1 =_{\N} Suc(0) \; \mathrm{true}}$$
         \end{itemize}
@@ -136,18 +137,18 @@
             \item Type former for the functions with return type depending on the parameter
             \item \underline{Set-theoretic equivalent:}\\
             Cartesian product over a family of sets: $\Pi_{i\in I}B_i$
-            \item preserved by definitional equality.
+            \item preserved by definitional equality
         \end{itemize}
+        \vspace{40pt}
+        $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamma \vdash \Pi x:\sigma.\tau \typ}\F$$
     \end{frame}
     \begin{frame}
         \frametitle{Rules}
-        $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamma \vdash \Pi x:\sigma.\tau \typ}\F$$
-        \vspace{10pt}
         $$\frac{\Gamma, x:\sigma \vdash M : \tau}{\Gamma \vdash \lambda x:\sigma.M^\tau : \Pi x:\sigma.\tau}\Intro$$
-        \vspace{10pt}
-        $$\frac{\Gamma \vdash \lambda x:\sigma.M^\tau:\Pi x:\sigma.\tau \quad \Gamma \vdash N:\sigma}{\Gamma \vdash \app{\lambda x:\sigma.M^{\tau}}{N} = M[N/x]:\tau[N/x]}\C$$
-        \vspace{10pt}
+        \vspace{20pt}
         $$\frac{\Gamma \vdash M : \Pi x: \sigma . \tau \quad \Gamma \vdash N: \sigma}{\Gamma \vdash \app{M}{N}: \tau[N/x]}\E$$
+        \vspace{20pt}
+        $$\frac{\Gamma \vdash \lambda x:\sigma.M^\tau:\Pi x:\sigma.\tau \quad \Gamma \vdash N:\sigma}{\Gamma \vdash \app{\lambda x:\sigma.M^{\tau}}{N} = M[N/x]:\tau[N/x]}\C$$
     \end{frame}
     \subsection{$\sum$-type}
     \begin{frame}
@@ -156,20 +157,29 @@
             \item Type former for pairs with second element type depending on the first element
             \item \underline{Set-theoretic equivalent:}\\
             Disjoint union over a family of sets: $\Sigma_{i\in I}B_i \defeq \{(i,b)|i \in I \wedge b \in B_i\}$
-            \item $\pi_1 \defeq \R{[x:\sigma,y:\tau]x}{M}:\sigma$
-            \item $\pi_2 \defeq \mathrm{R}^\Sigma_{[z:\Sigma x:\sigma.\tau]\tau[z.1/x]}([x:\sigma,y:\tau]y, M):\tau[M.1]$
             \item preserved by definitional equality.
         \end{itemize}
+        \vspace{40pt}
+        $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamdash \Sigma x:\sigma.\tau \typ}\F$$
     \end{frame}
     \begin{frame}
-        \frametitle{Rules}
-        $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamdash \Sigma x:\sigma.\tau \typ}\F$$
+        \frametitle{Rules 1}
         $$\frac{\Gamma \vdash M : \sigma\quad \Gamma \vdash N : \tau[M/x]}{\Gamma \vdash \pair{M}{N} : \Sigma x:\sigma.\tau}\Intro$$
-        $$\frac{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}:\rho[\pair{}{}/z]}}{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}}}\C$$
-        $$=H[M/x,N/y]:\rho[\pair{}{}/z].$$
+        \vspace{30pt}
         $$\Gamma,z:\Sigma x:\sigma.\tau \vdash \rho \typ$$
         $$\Gamma,x:\sigma,y:\tau\vdash H:\rho [\pair{x}{y}/z]$$
         $$\frac{\quad \Gamma \vdash M : \Sigma x:\sigma.\tau}{\Gamma \vdash \R{[x:\sigma.y:\tau]H}{M}:\rho[M/z]}\E$$
+    \end{frame}
+    \begin{frame}
+        \frametitle{Rules 2}
+        $$\frac{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}:\rho[\pair{}{}/z]}}{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}}}\C$$
+        $$=H[M/x,N/y]:\rho[\pair{}{}/z].$$
+        \vspace{5pt}\\
+        \underline{Projection definitions}:
+        \begin{align*}
+            &\pi_1 \defeq \R{[x:\sigma,y:\tau]x}{M}:\sigma\\
+            &\pi_2 \defeq \mathbold{R}^\Sigma_{[z:\Sigma x:\sigma.\tau]\tau[z.1/x]}([x:\sigma,y:\tau]y, M):\tau[M.1]\\
+        \end{align*}
     \end{frame}
     \subsection{Naturals}
     \begin{frame}
@@ -177,39 +187,48 @@
         Naturals are as always inductively defined, thus we have the two following objects:
         $$0 \text{ and } Suc(M) \text{ with } M:\N$$
         \vspace{10pt}
-        Then we can define operations like addition:
-        $$M + N \defeq \RN{N}{[n:\N, x:\N]Suc(x)}{M}:\N$$
+        We then have rules for each object:
+        $$\frac{\vdash \Gamma \cntxt}{\Gamma \vdash \N \typ}\F$$
+        $$\frac{\vdash \Gamma \cntxt}{\Gamma \vdash 0 : \N}\qquad \frac{\Gamma \vdash M : \N}{\Gamma \vdash Suc(M):\N}\Intro$$
     \end{frame}
     \begin{frame}
         \frametitle{Rules}
-        $$\frac{\vdash \Gamma \cntxt}{\Gamma \vdash \N \typ}\F \frac{\vdash \Gamma \cntxt}{\Gamma \vdash 0 : \N}\& \frac{\Gamma \vdash M : \N}{\Gamma \vdash Suc(M):\N}\Intro$$
+        
         $$\Gamma,n:\N\vdash\sigma\typ$$
         $$\Gamdash H_z : \sigma[0/n]$$
         $$\Gamma,n:\N,x:\sigma\vdash H_s : \sigma[Suc(n)/n]$$
         $$\frac{\Gamdash M: \N}{\Gamdash\RN{H_z}{[n:\N,x:\sigma]H_s}{M}:\sigma[M/n]}\E$$
-        $$\frac{\Gamma \vdash \RN{H_z}{\bn H_s}{0} : \sigma[0/n]}{\Gamma \vdash \RN{H_z}{\bn H_s}{0} = H_z: \sigma[0/n]}\C$$
-        $$\frac{\Gamma \vdash \RN{H_z}{\bn H_s}{Suc(M)} : \sigma[Suc(M)/n]}{\Gamma \vdash \RN{H_z}{\bn H_s}{Suc(M)} =}\C$$
-        $$ H_s[M/n,\RN{H_z}{\bn H_s}{M}/x]:\sigma[Suc(M)/n]$$
+    \end{frame}
+    \begin{frame}
+        \frametitle{Naturals: usage}
+        \underline{Computation rules}:
+        \begin{align*}
+            \Gamma &\vdash \RN{H_z}{\bn H_s}{0} = H_z: \sigma[0/n] &\text{(C-0)}\\
+            \Gamma &\vdash \RN{H_z}{\bn H_s}{Suc(M)} &\text{(C-S)}\\
+            &= H_s[M/n,\RN{H_z}{\bn H_s}{M}/x]:\sigma[Suc(M)/n]
+        \end{align*}
+        \vspace{10pt}\\
+        Then we can define operations like addition:
+        $$M + N \defeq \RN{N}{[n:\N, x:\N]Suc(x)}{M}:\N$$
     \end{frame}
     \subsection{Identity types}
     \begin{frame}
         \frametitle{Identity types}
         \begin{itemize}
             \item Type former for typal equality
-            \item Enables equality reasonning inside type theory
             \item $\Refl{M} : \Id{M}{M}$ with $M : \sigma$
-            \item We can deduce other properties of typal equality like symmetry, transitivity, Leibniz principle thanks to the elimination rule.
         \end{itemize}
+        \vspace{20pt}
+        $$\frac{\Gamdash M:\sigma \quad \Gamdash N:\sigma}{\Gamma \vdash \Id{M}{N} \typ}\F$$
+        \vspace{15pt}
+        $$\frac{\Gamdash M:\sigma}{\Gamdash\Refl{M}:\Id{M}{M}}\Intro$$
     \end{frame}
     \begin{frame}
         \frametitle{Rules}
-        $$\frac{\Gamdash M:\sigma \quad \Gamdash N:\sigma}{\Gamma \vdash \Id{M}{N} \typ}\F$$
-        $$\frac{\Gamdash M:\sigma}{\Gamdash\Refl{M}:\Id{M}{M}}\Intro$$
         $$\Gamdash\sigma\typ\quad\Gamdash M:\sigma\quad\Gamdash N:\sigma$$
         $$\Gamma, x:\sigma,y:\sigma,p:\Id{x}{y}\vdash\tau\typ$$
         $$\Gamma,z:\sigma\vdash H:\tau[z/x,z/y,\Refl{z}/p]$$
         $$\frac{\Gamdash P:\Id{M}{N}}{\Gamdash\RID{[z:\sigma]H}{M}{N}{P}:\tau[M/x,N/y,P/p]}\E$$
-        $$\frac{\Gamma \vdash \RID{\bi H}{M}{M}{\Refl{M}}:\tau[M/x,M/y,\Refl{M}/p]}{\Gamma \vdash\ idem = H[M/z]:\tau[M/x,M/y,\Refl{M}/p]}$$$\C$
     \end{frame}
     \subsection{Universes}
     \begin{frame}
@@ -223,7 +242,6 @@
             \item Add type formers to our Universes
             \item Rules to maintain closure
         \end{itemize}
-          
     \end{frame}
     \begin{frame}
         \frametitle{Adding dependant type $\Pich$}
@@ -234,18 +252,20 @@
     \begin{frame}
         \frametitle{Impredicative quantification}
         \begin{itemize}
-            \item We can add $\forall$ or Impredicative quantification
-            \item Terms like $\forall x:\sigma.T:U$
-            \item domain type $\sigma arbitrarily big$
-            \item Allows typing of the identity function $polyone$ known from polymorphic lambda calculus
-            \item $polyone = \forall c:U.\forall:El(c).c$
+            \item $\forall x:\sigma.T:U$
+            \item Important for universe closure
+            \item $\sigma$ arbitrarily big
+            \item $polyone = \forall c:U.\forall s:El(c).s$
         \end{itemize}
+        \vspace{15pt}
+        $$\frac{\Gamdash\sigma\typ\quad\Gamma,x:\sigma\vdash T:U}{\Gamdash\forall x:\sigma.T:U}$$
     \end{frame}
     \begin{frame}
         \frametitle{Impredicative quantification - Rules}
-        $$\frac{\Gamdash\sigma\typ\quad\Gamma,x:\sigma\vdash T:U}{\Gamdash\forall x:\sigma.T:U}$$
         $$\frac{\Gamma,x:\sigma\vdash M:El(T)}{\Gamdash\lambdach:El(\forall x:\sigma.T)}\Intro$$
+        \vspace{10pt}
         $$\frac{\Gamdash M:el(\forall x:\sigma.T)\quad\Gamdash N:\sigma}{\Gamdash\Appch{M}{N}:El(T[N/x])}\E$$
+        \vspace{10pt}
         $$\frac{\Gamdash\Appch{\lambdach}{N}:El(T[N/x])}{\Gamdash\Appch{\lambdach}{N}=M[N/x]:El(T[N/x])}\C$$
     \end{frame}
     \section{Intensional and Extensional type theory}
@@ -254,7 +274,7 @@
         \begin{itemize}
             \item type theory + identity types = intensional type theory
             \item equality reflection:
-            $$\frac{\Gamma \vdash M = N : \sigma}{\Gamma \vdash P: \Id{M}{N}}$$
+            $$\frac{\Gamma \vdash P: \Id{M}{N}}{\Gamma \vdash M = N : \sigma}$$
             \item type theory + identity types + reflection rule = extensional type theory
             \item Judgmental equality and typing undecidable
         \end{itemize}
@@ -309,5 +329,7 @@
             \item[-] a functor $\mathcal{F} = (Ty,Tm):\cate^{op}\to \Fami$
             \item[-] a comprehension for each $\Gamma\in\cate$ and $\sigma\in\types(\Gamma)$  
         \end{itemize}
-    \end{frame}
+    \vspace{25pt}
+    To have a complete semantic, we would have to define the terms and substitution...
+\end{frame}
 \end{document}
