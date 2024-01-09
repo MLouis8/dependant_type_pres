@@ -42,6 +42,18 @@
 \date{\today}
 
 \begin{document}
+
+    \AtBeginSection[]{
+    \begin{frame}
+    \vfill
+    \centering
+    \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+        \usebeamerfont{title}\insertsectionhead\par%
+    \end{beamercolorbox}
+    \vfill
+    \end{frame}
+    }
+
     \begin{frame}
         \titlepage
     \end{frame}
@@ -55,7 +67,7 @@
         \frametitle{History}
         \begin{itemize}
             \item[-] 1972: System F, J-Y. Girard
-            \item[-] 1975: \underline{Intuitionnistic Type Theory}, P. Martin-Lof
+            \item[-] 1975: \underline{Intuitionistic Type Theory}, P. Martin-Lof
             \item[-] 1986: Nuprl System
             \item[-] 1988: Calculus of Construction, T. Coquand  
             \item[-] 1989: Coq
@@ -163,7 +175,7 @@
         $$\frac{\Gamma \vdash \sigma \typ \quad \Gamma,x:\sigma\vdash \tau \typ}{\Gamdash \Sigma x:\sigma.\tau \typ}\F$$
     \end{frame}
     \begin{frame}
-        \frametitle{Rules 1}
+        \frametitle{Rules}
         $$\frac{\Gamma \vdash M : \sigma\quad \Gamma \vdash N : \tau[M/x]}{\Gamma \vdash \pair{M}{N} : \Sigma x:\sigma.\tau}\Intro$$
         \vspace{30pt}
         $$\Gamma,z:\Sigma x:\sigma.\tau \vdash \rho \typ$$
@@ -171,9 +183,9 @@
         $$\frac{\quad \Gamma \vdash M : \Sigma x:\sigma.\tau}{\Gamma \vdash \R{[x:\sigma.y:\tau]H}{M}:\rho[M/z]}\E$$
     \end{frame}
     \begin{frame}
-        \frametitle{Rules 2}
-        $$\frac{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}:\rho[\pair{}{}/z]}}{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}}}\C$$
-        $$=H[M/x,N/y]:\rho[\pair{}{}/z].$$
+        \frametitle{How to use the dependant sum}
+        $$\frac{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}}:\rho[\pair{M}{N}/z]}{\Gamma \vdash \R{[x:\sigma,y:\tau]H}{\pair{M}{N}}}\C$$
+        $$=H[M/x,N/y]:\rho[\pair{M}{N}/z].$$
         \vspace{5pt}\\
         \underline{Projection definitions}:
         \begin{align*}
@@ -230,6 +242,16 @@
         $$\Gamma,z:\sigma\vdash H:\tau[z/x,z/y,\Refl{z}/p]$$
         $$\frac{\Gamdash P:\Id{M}{N}}{\Gamdash\RID{[z:\sigma]H}{M}{N}{P}:\tau[M/x,N/y,P/p]}\E$$
     \end{frame}
+    \begin{frame}
+        \frametitle{Intensional and Extensional type theory}
+        \begin{itemize}
+            \item type theory + identity types = intensional type theory
+            \item equality reflection:
+            $$\frac{\Gamma \vdash P: \Id{M}{N}}{\Gamma \vdash M = N : \sigma}$$
+            \item type theory + identity types + reflection rule = extensional type theory
+            \item Judgmental equality and typing undecidable
+        \end{itemize}
+    \end{frame}
     \subsection{Universes}
     \begin{frame}
         \frametitle{Universes}
@@ -264,20 +286,9 @@
         \frametitle{Impredicative quantification - Rules}
         $$\frac{\Gamma,x:\sigma\vdash M:El(T)}{\Gamdash\lambdach:El(\forall x:\sigma.T)}\Intro$$
         \vspace{10pt}
-        $$\frac{\Gamdash M:el(\forall x:\sigma.T)\quad\Gamdash N:\sigma}{\Gamdash\Appch{M}{N}:El(T[N/x])}\E$$
+        $$\frac{\Gamdash M:El(\forall x:\sigma.T)\quad\Gamdash N:\sigma}{\Gamdash\Appch{M}{N}:El(T[N/x])}\E$$
         \vspace{10pt}
         $$\frac{\Gamdash\Appch{\lambdach}{N}:El(T[N/x])}{\Gamdash\Appch{\lambdach}{N}=M[N/x]:El(T[N/x])}\C$$
-    \end{frame}
-    \section{Intensional and Extensional type theory}
-    \begin{frame}
-        \frametitle{Intensional and Extensional type theory}
-        \begin{itemize}
-            \item type theory + identity types = intensional type theory
-            \item equality reflection:
-            $$\frac{\Gamma \vdash P: \Id{M}{N}}{\Gamma \vdash M = N : \sigma}$$
-            \item type theory + identity types + reflection rule = extensional type theory
-            \item Judgmental equality and typing undecidable
-        \end{itemize}
     \end{frame}
     \section{Categoretical Semantics}
     \begin{frame}
@@ -302,7 +313,7 @@
             \item[-] terms in $Tm$   
         \end{itemize}
         \vspace{10pt}
-        And we define the corrisponding Semantic:
+        And we define the corresponding Semantic:
         \begin{itemize}
             \item[-] $\cate$ a category of contexts and context morphisms
             \item[-] for $\Gamma\in\cate$ a collection $\types(\Gamma)$ of semantic types
