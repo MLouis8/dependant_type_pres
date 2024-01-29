@@ -168,13 +168,13 @@
         \frametitle{Context formation \& type extension}
         \emph{Formation:}
         \begin{itemize}
-            \item $\top$ a terminal object in $\cate$
+            \item $\top$ a \textbf{terminal} object in $\cate$
             \item $\forall \Gamma \in \cate,\ \langle\rangle_\Gamma$ denotes the unique morphism from $\Gamma$ to $\top$ 
         \end{itemize}
         \vspace{15pt}
         \emph{Type Extension:}
         \begin{itemize}
-            \item $\forall (\Gamma,\sigma) \in \cate \times \types(\Gamma),\ \extension\in\cate$ is the comprehension of $\sigma$
+            \item $\forall (\Gamma,\sigma) \in \cate \times \types(\Gamma),\ \extension\in\cate$ is the \textbf{comprehension} of $\sigma$
             \item in the term model:
             $$\frac{\vdash\Gamma \cntxt\quad\Gamdash\sigma\typ}{\Gamma,x:\sigma\cntxt}$$
         \end{itemize}
@@ -212,10 +212,9 @@
         \vspace{8pt}
         $\vv$ \emph{morphism:}
         \begin{itemize}
-            \item $\vv_\sigma:\extension\to\sigma$ is the second projection
-            \item $\vv_\sigma \in \terms(\extension,\sigma\{\pp(\sigma)\})$
+            \item $\vv_\sigma \in \terms(\extension,\sigma\{\pp(\sigma)\})$ is the second projection
             \item in the term model:
-            $$\Gamma,x:\sigma\vdash \vv \implies x:\sigma$$
+            $$\Gamma,x:\sigma\vdash x:\sigma$$
         \end{itemize}
     \end{frame}
 
